@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kyle</title>
+  <title>心理測驗圖表範例</title>
   <style>
-    body {
+   body {
       background-color: #f5f0eb;
       color: #3a3330;
       font-family: Georgia, serif;
@@ -18,6 +18,7 @@
     h1 {
       font-size: 2rem;
       font-weight: normal;
+      text-align: center;
       letter-spacing: -0.5px;
       margin-bottom: 0.25rem;
     }
@@ -34,6 +35,7 @@
 
     p {
       margin: 0 0 1rem;
+      text-align: center;
     }
 
     a {
@@ -66,6 +68,11 @@
       margin: 0.1rem 0 0;
     }
 
+    .center-block {
+        display: block;
+        margin: 0 auto;
+    }
+
     /* 當螢幕寬度小於 600px 時（手機） */
     @media (max-width: 600px) {
       body {
@@ -76,27 +83,13 @@
         font-size: 1.6rem;  /* 手機上標題稍微縮小 */
       }
     }
-  </style>
+    </style>
 </head>
 <body>
-
-  <h1>Kyle</h1>
-  <p class="tagline">這是一片小小的、雜亂的潮間帶。</p>
-
-  <h2>關於我</h2>
-  <p>一枚不起眼的小拼圖塊，費盡一生在尋找那塊空白。<br><br>我是Kyle，正在從零開始學習程式語言。<br>我曾在文學與戲劇裡追尋答案，也總在痛苦與荒誕間迷路。<br>如果你恰好路過這裡，請坐，同我一起聽聽潮汐。
-  </p>
-
-  <h2>作品</h2>
-  <div class="work-item">
-    <a href="story.html">咖啡店的下午</a>
-    <p>我的第一個互動小說。四個結局，每條路都通向不同的自己。</p>
-    <a href="analysis.html">心理分析視覺化圖表</a>
-    <p>心理學作業。紀錄第一次視覺化量表的成果。</p>
-  </div>
-
-  <h2>興趣</h2>
-  <p>心理學、文學、戲劇、遊戲</p>
-
+    <h1>心理分析視覺化圖表(2026/6/12)</h1>
+    <img src="PHQ9_dist.png" alt="PHQ9分布圖" style="max-width:100%", class="center-block">
+    <p>PHQ9分布圖</p>
+    <img src="GAD7_gender.png" alt="GAD7性別分數比較圖" style="max-width:50%", class="center-block">
+    <p>GAD7性別分數比較圖</p>
 </body>
 </html>
