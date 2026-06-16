@@ -86,10 +86,27 @@
     </style>
 </head>
 <body>
-    <h1>心理分析視覺化圖表(2026/6/12)</h1>
-    <img src="PHQ9_dist.png" alt="PHQ9分布圖" style="max-width:100%", class="center-block">
-    <p>PHQ9分布圖</p>
-    <img src="GAD7_gender.png" alt="GAD7性別分數比較圖" style="max-width:50%", class="center-block">
-    <p>GAD7性別分數比較圖</p>
+  <h1>心理分析視覺化圖表(2026/6/12)</h1>
+  <img src="PHQ9_dist.png" alt="PHQ9分布圖" style="max-width:100%" class="center-block">
+  <p>PHQ9分布圖</p>
+  <img src="GAD7_gender.png" alt="GAD7性別分數比較圖" style="max-width:50%" class="center-block">
+  <p>GAD7性別分數比較圖</p>
+
+<h2>統計摘要</h2>
+<div id= "summary"></div>
+<script>
+  fetch("summary.json")
+  .then(response => response.json())
+  .then(data => {
+    const div = document.getElementById("summary");
+    div.innerHTML = `
+      <p>樣本數：${data["樣本數"]} 人（男性 ${data["男性人數"]} 人，女性 ${data["女性人數"]} 人）</p>
+      <p>PHQ9 憂鬱量表：平均 ${data["PHQ9平均"]}，標準差 ${data["PHQ9標準差"]}</p>
+      <p>GAD7 焦慮量表：平均 ${data["GAD7平均"]}，標準差 ${data["GAD7標準差"]}</p>
+      <p>SWLS 生活滿意度：平均 ${data["SWLS平均"]}，標準差 ${data["SWLS標準差"]}</p>
+    `;
+  });
+</script>
 </body>
-</html>
+</html> 
+
