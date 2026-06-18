@@ -1,0 +1,121 @@
+/* ── 基礎設定 ── */
+body {
+    background-color: #e8ded0;
+    color: #3d4a42;                /* 深潮池綠——不是純黑，帶有海的底色 */
+    font-family: Georgia, serif;
+    max-width: 620px;
+    margin: 80px auto;
+    padding: 0 24px;
+    line-height: 1.8;
+}
+
+/* ── 標題區 ── */
+header {
+    margin-bottom: 3rem;
+}
+
+header h1 {
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: normal;
+    color: #4a5f5a;                /* 深海墨綠——最深的顏色留給標題 */
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+}
+
+header p {
+    color: #a68c74;                /* 乾沙輔助色——像退潮後沙上的水痕 */
+    font-weight: normal;    
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+/* ── 段落 ── */
+p {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+}
+
+/* ── 各區塊的間距 ── */
+section {
+    margin-bottom: 2.25rem;
+}
+
+/* ── 圖表區 ── */
+figure {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+figure img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+figcaption {
+    font-size: 0.85rem;
+    color: #8a7e6a;
+    margin-top: 0.5rem;
+}
+
+/* ── JSON 摘要容器 ── */
+#summary-container {
+    font-size: 0.9rem;
+    color: #5a6a60;                /* 潮池中間色——比正文稍淡，標記為補充資訊 */
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid #c4b99e;  /* 濕沙色邊線 */
+    line-height: 1;
+}
+
+#summary-container p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── 簽名 ── */
+.signature {
+    margin-top: 2.5rem;
+    color: #a68c74;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* ── 連結 ── */
+a {
+    color: #9a6850;                /* 招潮蟹的鏽橘——整頁唯一的暖色強調 */
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    color: #a68c74;
+}
+
+/* ── 頁尾 ── */
+footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #c4b99e;
+    font-size: 0.85rem;
+    color: #a68c74;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+}
+
+/* ── 手機版 ── */
+@media (max-width: 600px) {
+    body {
+        margin: 40px auto;
+        padding: 0 16px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    header {
+        margin-bottom: 2rem;
+    }
+}
