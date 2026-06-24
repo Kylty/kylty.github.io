@@ -36,6 +36,30 @@ p {
     font-size: 1rem;
 }
 
+p2 {
+    color: #a68c74;
+    margin: 0 0 1rem;
+    font-size: 1rem;
+}
+
+h1 {
+    color: #4a5f5a
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.25rem;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #a68c74;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* ── 各區塊的間距 ── */
 section {
     margin-bottom: 2.25rem;
@@ -56,6 +80,44 @@ figcaption {
     font-size: 0.85rem;
     color: #8a7e6a;
     margin-top: 0.5rem;
+}
+
+.track {
+    position: relative;   /* 讓它成為內部元素的「定位基準」 */
+    width: 100%;
+    height: 8px;
+    background-color: #c4b99e;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.marker {
+    position: absolute;   /* 讓它可以用 left/top 自由定位 */
+    top: -4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #a85d3a;
+}
+/* ── 按鈕區 ── */
+button {
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    color: #2b4a46;
+    background: linear-gradient(to right, #8c9690 50%, #ddd2c0 50%);
+    background-size: 200% 100.5%;
+    border: 1px solid #3d4a42;
+    background-position: right bottom;
+    border-radius: 4px;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+}
+
+button:hover {
+    background-position: left bottom;  /* 滑鼠移上去之後 */
+    color: #e8ded0;
+    border: 1px solid #ddd2c0;
 }
 
 /* ── JSON 摘要容器 ── */
