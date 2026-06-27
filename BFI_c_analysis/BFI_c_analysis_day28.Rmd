@@ -1,0 +1,159 @@
+---
+title: "大五人格量表(BFI)嚴謹性趨勢分析"
+author: "Kyle"
+date: "2026-06-19"
+output: 
+  html_document:
+    toc: true
+---
+```{r setup, include=FALSE}
+library(psych)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+data(bfi)
+```
+
+## 一、資料說明
+
+本報告使用 psych 套件內建的 bfi 資料集，來自 International Personality Item Pool（IPIP），透過 SAPA 線上評估專案收集。本資料集共 2800 人，包含 25 題人格自評題項（1 = 非常不符合至 6 = 非常符合），涵蓋開放性（Openness）、嚴謹性（Conscientiousness）、外向性（Extraversion）、親和性（Agreeableness）、神經質（Neuroticism）五大維度，另有性別、教育程度、年齡三項人口統計變數。本報告聚焦於嚴謹性與性別及年齡之關聯。
+
+## 二、遺漏值與異常值處理
+
+```{r cleaning, message=FALSE}
+# 遺漏值檢查（輸出供報告文字參考）
+bfi |>
+  select(C1:C5, gender, age, education) |>
+  summarise(across(everything(), ~sum(is.na(.))))
+
+# C 題項遺漏值機制判斷
+bfi |>
+  mutate(missing_c = if_any(c(C1, C2, C3, C4, C5), is.na)) |>
+  group_by(missing_c) |>
+  summarise(
+    n        = n(),
+    mean_age = mean(age),
+    sd_age   = sd(age),
+    .groups  = "drop"
+  )
+
+# 清理流程
+bfi_clean <- bfi |>
+  filter(!if_any(c(C1, C2, C3, C4, C5), is.na)) |>
+  filter(age >= 11) |>
+  mutate(
+    C4r = 7 - C4,
+    C5r = 7 - C5,
+    conscientiousness = (C1 + C2 + C3 + C4r + C5r) / 5,
+    gender = factor(gender, levels = c(1, 2), labels = c("男", "女"))
+  )
+
+# 年齡分組
+bfi_clean <- bfi_clean |>
+mutate(
+  age_group = case_when(
+    age <= 17 ~ "青少年",
+    age <= 25 ~ "成年初顯期",
+    age <= 39 ~ "成年期",
+    TRUE      ~ "中年期"
+  )
+)
+
+  bfi_clean$age_group <- factor(bfi_clean$age_group,
+    levels = c("青少年", "成年初顯期", "成年期", "中年期"))
+```
+
+### 2.1 整體統計變數遺漏判斷
+檢測統計變數遺漏值，發現教育程度中有 223 份遺漏值（8%）。進一步檢查教育程度與年齡的關聯，發現教育程度缺失的人平均年齡為 18 歲，有填的人平均年齡為 29.7 歲，差距相當大，強烈指向 MAR——年紀小的受試者尚未完成學業，無法對應「高中畢業／大學畢業／研究所」等選項。因教育程度並非本報告聚焦的關鍵變數，因此不予處理。
+
+### 2.2 嚴謹性分數遺漏值判斷
+檢測 C 題項遺漏值，共 93 筆（3.3%）。比較有缺與無缺兩組的平均年齡（28.7 歲 vs 30.2 歲），差異極小，判斷為 MCAR，直接刪除處理。
+
+### 2.3 年齡異常值判斷
+檢查年齡分布，發現最小值為 3 歲。排除 11 歲以下受試者共 2 人，因自評式人格量表需要形式運思能力方能有效作答。
+
+### 2.4 反向計分
+觀察題目內容，C4「半途而廢」與 C5「浪費時間」為低嚴謹性描述，進行反向計分（7 − 原始分數），使其與其他題項方向一致。五題平均後建立嚴謹性綜合分數。
+清理後最終樣本為 2705 人。
+
+## 三、描述統計表
+
+```{r gender-table}
+bfi_clean |>
+  group_by(gender) |>
+  summarise(
+    n          = n(),
+    mean   = mean(conscientiousness),
+    sd     = sd(conscientiousness),
+    median = median(conscientiousness),
+    .groups    = "drop"
+  ) |>
+  knitr::kable(digits = 2, caption = "不同性別嚴謹性描述統計")
+```
+
+```{r age_group-table}
+
+bfi_clean |>
+  group_by(age_group) |>
+  summarise(
+    n      = n(),
+    mean   = mean(conscientiousness),
+    sd     = sd(conscientiousness),
+    median = median(conscientiousness),
+    .groups    = "drop"
+  ) |>
+  knitr::kable(digits = 2, caption = "不同年齡組嚴謹性描述統計")
+```
+
+## 四、圖表
+
+### 4.1 各年齡組嚴謹性分布
+根據各年齡組的嚴謹性分數進行盒狀圖視覺化呈現。
+
+```{r boxplot}
+ggplot(bfi_clean, aes(x=age_group, y=conscientiousness, fill=age_group)) +
+  geom_boxplot(alpha=0.7, width=0.5) +
+  geom_jitter(width=0.1, alpha=0.4, size=0.1) +
+  stat_summary(fun = mean, geom = "line", aes(group = 1), linewidth = 0.8, color = 'red') +
+  labs(title="C分數比較",
+       x="組別", y="C分數") +
+  theme_minimal() +
+  theme(legend.position="none")
+```
+
+### 4.2 年齡與性別的連續趨勢
+根據性別與年齡的平均嚴謹性分數進行散布圖與趨勢線的視覺化呈現。
+
+```{r smooth-trend}
+ggplot(bfi_clean, aes(x = age, y = conscientiousness, color = gender)) +
+  geom_smooth(method = "loess") +
+  labs(title = "男女年齡C分數比較", x = "年齡", y = "C值", color = "") +
+  theme_minimal()
+```
+
+### 4.3 題項層次比較
+根據不同年齡組的嚴謹性各題分數進行折線圖視覺化呈現。
+
+```{r item-comparison}
+bfi_long <- bfi_clean |>
+  select(id = 1, age_group, C1, C2, C3, C4r, C5r) |>
+  pivot_longer(cols = C1:C5r, names_to = "item", values_to = "score")
+
+item_summary <- bfi_long |>
+  group_by(age_group, item) |>
+  summarise(mean = mean(score), .groups = "drop")
+
+ggplot(item_summary, aes(x = age_group, y = mean, color = item, group = item)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2) +
+  labs(title = "不同年齡組各題C分數平均", x = "年齡組", y = "分數", color = "題目") +
+  theme_minimal()
+```
+
+## 五、結果詮釋
+
+整體來說，男性的嚴謹性平均分數（*M* = 4.14, *SD* = 0.97）略低於女性（*M* = 4.32, *SD* = 0.94），效果量極小（*d* = -.19）。
+
+嚴謹性分數平均大致隨著年齡增高，青少年與中年期之間效果量中等（*d* = -.59）。55 歲以前，女性嚴謹性分數平均高於男性，而後有下滑趨勢，但因高齡樣本較少（45 歲以上男性 87 人、女性 216 人），此趨勢的推論應保持謹慎。
+
+在題項層次上，第四題「半途而廢」隨年齡的變化最大（從 3.90 升至 4.72），第五題「不浪費時間」的分數則普遍低於其他題項，其餘分數隨年齡增長大致呈上升趨勢。
