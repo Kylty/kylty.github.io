@@ -31,6 +31,7 @@
       margin-bottom: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
+      border-bottom: 1px solid #a68c74;
     }
 
     p {
@@ -93,21 +94,17 @@
   <p>從零開始學統計與Python。<br>目標是進入心理學領域。這裡會慢慢記錄這段路。</p>
 
   <h2>作品</h2>
-  <div class="work-item">
-    
-    <a href="story.html">咖啡店的下午</a>
-    <p>2026.5.30</p>  
-    <p> 我的第一個互動小說。四個結局，每條路都通向不同的自己。</p><br>
-    <a href="BFI_c_analysis/BFI_c_analysis_day28.html">大五人格量表(BFI)嚴謹性趨勢分析</a>
-    <p>2026.6.19</p>
-    <p>使用R語言呈現完整的心理學術報告。討論性別、年齡之於嚴謹性的相關性。</p><br>
-    <a href="openness/index.html">開放性的模樣</a>
-    <p>2026.6.24 </p>
-    <p>一場關於人格測驗反例的自我探索與互動，思考什麼是"獨特"。</p>
-  </div>
+  <div id="works-container"></div>
+  <p class="all-works-link"><a href="works.html">查看更多作品 →</a></p>
 
   <h2>興趣</h2>
   <p>心理學、文學、戲劇、遊戲</p>
+
+  <script src="works-render.js"></script>
+  <script>
+    renderWorks('works-container', 3);
+  </script>
+
 
 </body>
 </html>
