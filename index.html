@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kyle</title>
   <style>
+    html {
+      min-height: 100%;
+    }
+
     body {
-      background-color: #e8ded0;
+      background: linear-gradient(180deg, #e8ded0 0%, #e0d6c4 55%, #d2cdb4 100%);
+      background-attachment: fixed;
       color: #3d4a42;
       font-family: Georgia, serif;
       max-width: 680px;
@@ -32,6 +37,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       border-bottom: 1px solid #a68c74;
+      padding-bottom: 0.5rem;
     }
 
     p {
@@ -42,7 +48,6 @@
       color: #9a6850;
       text-decoration: underline;
       text-underline-offset: 3px;
-      
     }
 
     a:hover {
@@ -55,28 +60,72 @@
       margin-bottom: 2.5rem;
     }
 
-    .work-item {
-      margin-bottom: 1.25rem;
+    /* 作品卡片 */
+    .work-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.1rem;
+      margin-bottom: 1.75rem;
     }
 
-    .work-item a {
+    .work-thumb {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #d9c9ae;
+      color: #9a6850;
+      border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+      transition: transform 0.3s ease;
+    }
+
+    .work-thumb svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .work-card:hover .work-thumb {
+      transform: scale(1.08) rotate(3deg);
+    }
+
+    .work-info a {
       font-size: 1rem;
     }
 
-    .work-item p {
-      font-size: 0.9rem;
+    .work-date {
+      font-size: 0.85rem;
       color: #8a7e6a;
-      margin: 0.1rem 0 0;
+      margin: 0.15rem 0 0.3rem;
+    }
+
+    .work-desc {
+      font-size: 0.9rem;
+      color: #5c5347;
+      margin: 0;
+    }
+
+    .all-works-link {
+      font-size: 0.9rem;
     }
 
     /* 當螢幕寬度小於 600px 時（手機） */
     @media (max-width: 600px) {
       body {
-        margin: 40px auto;  /* 手機上縮小上下間距 */
-        padding: 0 16px;    /* 手機上縮小左右內距 */
+        margin: 40px auto;
+        padding: 0 16px;
       }
       h1 {
-        font-size: 1.6rem;  /* 手機上標題稍微縮小 */
+        font-size: 1.6rem;
+      }
+      .work-thumb {
+        width: 52px;
+        height: 52px;
+      }
+      .work-thumb svg {
+        width: 26px;
+        height: 26px;
       }
     }
   </style>
@@ -95,7 +144,7 @@
 
   <h2>作品</h2>
   <div id="works-container"></div>
-  <p class="all-works-link"><a href="works.html">查看更多作品 →</a></p>
+  <p class="all-works-link"><a href="works.html">查看全部作品 →</a></p>
 
   <h2>興趣</h2>
   <p>心理學、文學、戲劇、遊戲</p>
@@ -104,7 +153,6 @@
   <script>
     renderWorks('works-container', 3);
   </script>
-
 
 </body>
 </html>

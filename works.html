@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>全部作品 - Kyle</title>
   <style>
+    html {
+      min-height: 100%;
+    }
+
     body {
-      background-color: #e8ded0;
+      background: linear-gradient(180deg, #e8ded0 0%, #e0d6c4 55%, #d2cdb4 100%);
+      background-attachment: fixed;
       color: #3d4a42;
       font-family: Georgia, serif;
       max-width: 680px;
@@ -44,18 +49,50 @@
       margin-bottom: 2.5rem;
     }
 
-    .work-item {
-      margin-bottom: 1.25rem;
+    /* 作品卡片（跟 index.html 共用同一套樣式） */
+    .work-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.1rem;
+      margin-bottom: 1.75rem;
     }
 
-    .work-item a {
+    .work-thumb {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #d9c9ae;
+      color: #9a6850;
+      border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+      transition: transform 0.3s ease;
+    }
+
+    .work-thumb svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .work-card:hover .work-thumb {
+      transform: scale(1.08) rotate(3deg);
+    }
+
+    .work-info a {
       font-size: 1rem;
     }
 
-    .work-item p {
-      font-size: 0.9rem;
+    .work-date {
+      font-size: 0.85rem;
       color: #8a7e6a;
-      margin: 0.1rem 0 0;
+      margin: 0.15rem 0 0.3rem;
+    }
+
+    .work-desc {
+      font-size: 0.9rem;
+      color: #5c5347;
+      margin: 0;
     }
 
     /* 當螢幕寬度小於 600px 時（手機） */
@@ -66,6 +103,14 @@
       }
       h1 {
         font-size: 1.6rem;
+      }
+      .work-thumb {
+        width: 52px;
+        height: 52px;
+      }
+      .work-thumb svg {
+        width: 26px;
+        height: 26px;
       }
     }
   </style>

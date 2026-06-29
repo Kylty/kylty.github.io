@@ -3,18 +3,21 @@
     "title": "咖啡店的下午",
     "link": "story.html",
     "date": "2026-05-30",
-    "description": "我的第一個互動小說。四個結局，每條路都通向不同的自己。"
+    "description": "我的第一個互動小說。四個結局，每條路都通向不同的自己。",
+    "icon": "coffee"
   },
   {
     "title": "大五人格量表(BFI)嚴謹性趨勢分析",
     "link": "BFI_c_analysis/BFI_c_analysis_day28.html",
     "date": "2026-06-19",
-    "description": "使用R語言呈現完整的心理學術報告。討論性別、年齡之於嚴謹性的相關性。"
+    "description": "使用R語言呈現完整的心理學術報告。討論性別、年齡之於嚴謹性的相關性。",
+    "icon": "chart"
   },
   {
     "title": "開放性的模樣",
     "link": "openness/index.html",
     "date": "2026-06-24",
-    "description": "一場關於人格測驗反例的自我探索與互動，思考什麼是獨特。"
+    "description": "一場關於人格測驗反例的自我探索與互動，思考什麼是獨特。",
+    "icon": "scatter"
   }
 ]
