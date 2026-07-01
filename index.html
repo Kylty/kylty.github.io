@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kyle</title>
   <style>
-    html {
-      min-height: 100%;
-    }
-
     body {
-      background: linear-gradient(180deg, #e8ded0 0%, #e0d6c4 55%, #d2cdb4 100%);
-      background-attachment: fixed;
+      background-color: #e8ded0;
       color: #3d4a42;
       font-family: Georgia, serif;
       max-width: 680px;
@@ -58,6 +53,29 @@
       color: #8a7e6a;
       font-size: 1rem;
       margin-bottom: 2.5rem;
+    }
+
+    /* 導覽列 */
+    nav {
+      margin-bottom: 3rem;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #8a7e6a;
+      text-decoration: none;
+      margin-right: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    nav a:hover {
+      color: #4a5f5a;
+    }
+
+    nav a.nav-active {
+      color: #3d4a42;
+      font-weight: bold;
     }
 
     /* 作品卡片 */
@@ -110,6 +128,37 @@
       font-size: 0.9rem;
     }
 
+    /* 學習進度條 */
+    .progress-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-label {
+      font-size: 0.95rem;
+      color: #3d4a42;
+      margin-bottom: 0.4rem;
+    }
+
+    .progress-bar-bg {
+      background: #d9c9ae;
+      border-radius: 6px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: #9a6850;
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.6s ease;
+    }
+
+    .progress-content {
+      font-size: 0.85rem;
+      color: #8a7e6a;
+      margin: 0.35rem 0 0;
+    }
+
     /* 當螢幕寬度小於 600px 時（手機） */
     @media (max-width: 600px) {
       body {
@@ -132,15 +181,17 @@
 </head>
 <body>
 
+  <nav id="nav-container"></nav>
+
   <h1>Kyle</h1>
   <p class="tagline">這是一片小小的、雜亂的潮間帶。</p>
 
-  <h2>關於我</h2>
+  <h2 id="about">關於我</h2>
   <p>一枚不起眼的小拼圖塊，費盡一生在尋找那塊空白。<br><br>你可以叫我Kyle。<br>我曾在文學與戲劇裡追尋答案，也總在痛苦與荒誕間迷路。<br>如果你恰好路過這裡，請坐，同我一起聽聽潮汐。
   </p>
 
-  <h2>我現在正在</h2>
-  <p>從零開始學統計與Python。<br>目標是進入心理學領域。這裡會慢慢記錄這段路。</p>
+  <h2>我正在學</h2>
+  <div id="progress-container"></div>
 
   <h2>作品</h2>
   <div id="works-container"></div>
@@ -150,8 +201,39 @@
   <p>心理學、文學、戲劇、遊戲</p>
 
   <script src="works-render.js"></script>
+  <script src="nav.js"></script>
   <script>
     renderWorks('works-container', 3);
+    renderNav('nav-container');
+
+    const plans = [
+      { name: "統計", start: "2026-5-20", total: 90, studied: 41, recent: "ANOVA分析" },
+      { name: "程式語言", start: "2026-5-23", total: 90, studied: 36, recent: "JavaScript函式與DOM操作" },
+      { name: "多益備考", start: "2026-6-28", total: 60, studied: 2, recent: "文法基底加強" }
+    ];
+
+    function renderProgress(containerId) {
+      let HTML = '';
+      for (const progress of plans) {
+        const now = new Date()
+        const start = new Date(progress.start);
+        const diffMs = now - start;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const percent = progress.studied / progress.total * 100
+        HTML += `
+        <div class="progress-section">
+          <p class="progress-label">${progress.name} <br> 學習進度： ${progress.studied}/${progress.total}天（${diffDays}前開始）</p>
+           <div class="progress-bar-bg">
+           <div class="progress-bar-fill" style="width: ${percent}%"></div>
+           </div>
+           <p class="progress-content">目前位置：${progress.recent}</p>
+        </div>
+            `;
+      }
+      document.getElementById(containerId).innerHTML = HTML;
+    }
+
+    renderProgress('progress-container');
   </script>
 
 </body>

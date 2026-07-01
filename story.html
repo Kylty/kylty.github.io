@@ -85,6 +85,30 @@
     #choices {
       margin-top: 1.5rem;
     }
+
+        /* 導覽列 */
+    nav {
+      margin-bottom: 3rem;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #8a7e6a;
+      text-decoration: none;
+      margin-right: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    nav a:hover {
+      color: #4a5f5a;
+    }
+
+    nav a.nav-active {
+      color: #3d4a42;
+      font-weight: bold;
+      text-decoration: none;
+    }
     /* 當螢幕寬度小於 600px 時（手機） */
     @media (max-width: 600px) {
       body {
@@ -101,7 +125,7 @@
 </head>
 
 <body>
-
+  <nav id="nav-container"></nav>
   <div id="title-screen"> <!-- 1. 標題畫面 -->
     <h1 id="title">咖啡店的下午</h1>
     <p id="subtitle">一場關於迷途的夢</p>
@@ -265,7 +289,10 @@
     showScene('start');
 
   </script>
-
+  <script src="nav.js"></script>
+  <script>
+    renderNav('nav-container');
+  </script>
 
 </body>
 </html>

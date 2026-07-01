@@ -26,3 +26,27 @@ table {
   border-radius: 0 8px 8px 0;
   margin: 12px 0;
 }
+
+/* 導覽列 */
+nav {
+  margin-bottom: 3rem;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+nav a {
+  color: #8a7e6a;
+  text-decoration: none;
+  margin-right: 1.5rem;
+  text-transform: uppercase;
+}
+
+nav a:hover {
+  color: #4a5f5a;
+}
+
+nav a.nav-active {
+  color: #3d4a42;
+  font-weight: bold;
+  text-decoration: none;
+}

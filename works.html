@@ -95,6 +95,29 @@
       margin: 0;
     }
 
+        /* 導覽列 */
+    nav {
+      margin-bottom: 3rem;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #8a7e6a;
+      text-decoration: none;
+      margin-right: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    nav a:hover {
+      color: #4a5f5a;
+    }
+
+    nav a.nav-active {
+      color: #3d4a42;
+      font-weight: bold;
+      text-decoration: none;
+    }
     /* 當螢幕寬度小於 600px 時（手機） */
     @media (max-width: 600px) {
       body {
@@ -116,7 +139,7 @@
   </style>
 </head>
 <body>
-
+  <nav id="nav-container"></nav>
   <a class="back-link" href="index.html">← 回首頁</a>
   <h1>全部作品</h1>
 
@@ -126,6 +149,9 @@
   <script>
     renderWorks('all-works-container');
   </script>
-
+  <script src="nav.js"></script>
+  <script>
+    renderNav('nav-container');
+  </script>
 </body>
 </html>
