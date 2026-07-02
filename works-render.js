@@ -23,45 +23,43 @@ const icons = {
   </svg>`
 };
 
-function renderWorks(containerId, limit) {
-  fetch("works.json")
-    .then(response => response.json())
-    .then(data => {
-      const div = document.getElementById(containerId);
+async function renderWorks(containerId, limit) {
+  const response = await fetch("works.json")
+  let data = await response.json()
+  const div = document.getElementById(containerId);
 
-      // 1. 排序：依 date 新到舊
-      data.sort((a, b) => {
-        if (a.date > b.date) {
-          return -1;
-        } else if (a.date == b.date) {
-          return 0;
-        } else {
-          return 1;
-        }
-      });
+  // 1. 排序：依 date 新到舊
+  data.sort((a, b) => {
+    if (a.date > b.date) {
+      return -1;
+    } else if (a.date == b.date) {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
 
-      // 2. 依 limit 決定要顯示全部還是前 limit 筆
-      if (limit == null) {
-        data = data;
-      } else {
-        data = data.slice(0, limit);
-      }
+  // 2. 依 limit 決定要顯示全部還是前 limit 筆
+  if (limit == null) {
+    data = data;
+  } else {
+    data = data.slice(0, limit);
+  }
 
-      // 3. 組成 HTML 字串（卡片版：圖示 + 文字資訊）
-      let HTML = '';
-      for (const article of data) {
-        HTML += `
-          <div class="work-card">
-            <div class="work-thumb">${icons[article.icon]}</div>
-            <div class="work-info">
-              <a href="${article.link}">${article.title}</a>
-              <p class="work-date">${article.date}</p>
-              <p class="work-desc">${article.description}</p>
-            </div>
-          </div>`;
-      }
+  // 3. 組成 HTML 字串（卡片版：圖示 + 文字資訊）
+  let HTML = '';
+  for (const article of data) {
+    HTML += `
+      <div class="work-card">
+        <div class="work-thumb">${icons[article.icon]}</div>
+        <div class="work-info">
+          <a href="${article.link}">${article.title}</a>
+          <p class="work-date">${article.date}</p>
+          <p class="work-desc">${article.description}</p>
+        </div>
+      </div>`;
+  }
 
-      // 4. 塞進畫面
-      div.innerHTML = HTML;
-    });
+  // 4. 塞進畫面
+  div.innerHTML = HTML;
 }
