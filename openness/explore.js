@@ -24,7 +24,7 @@ document.getElementById('bfi-form').addEventListener('submit', function(event) {
                 }
             }
             if (hasError) {
-                document.getElementById('result-container').innerHTML = '<p2>請確認所有欄位都填入 1 到 5 之間的數字。</p2>';
+                document.getElementById('result-container').innerHTML = '<p2>請確認所有欄位都填入 24 到 120 之間的數字。</p2>';
             } else {
                 let html = ''
                 const traitNames = {
@@ -39,7 +39,7 @@ document.getElementById('bfi-form').addEventListener('submit', function(event) {
 
                     const chineseName = traitNames[trait];
                     html += `
-                        <p>${chineseName}</p>
+                        <p>${chineseName}：你在${percentile}%的位置</p>
                         <div class="track">
                             <div class="marker" style="left: ${percentile}%;"></div>
                         </div>
@@ -51,10 +51,10 @@ document.getElementById('bfi-form').addEventListener('submit', function(event) {
 
     function validateAndRound(value) {
     const num = parseFloat(value);
-    if (isNaN(num) || num < 1 || num > 5) {
+    if (isNaN(num) || num < 24 || num > 120) {
         return null;  // 不合理，回傳 null 代表「這個輸入有問題」
     }
-    return Math.round(num * 10) / 10;
+    return num /24;
 }
   
 
