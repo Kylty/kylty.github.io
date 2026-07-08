@@ -3,7 +3,7 @@ body {
     background-color: #e8ded0;
     color: #3d4a42;                /* 深潮池綠——不是純黑，帶有海的底色 */
     font-family: Georgia, serif;
-    max-width: 620px;
+    max-width: 680px;
     margin: 80px auto;
     padding: 0 24px;
     line-height: 1.8;
@@ -43,7 +43,7 @@ p2 {
 }
 
 h1 {
-    color: #4a5f5a
+    color: #4a5f5a;
     font-size: 2rem;
     font-weight: normal;
     letter-spacing: -0.5px;

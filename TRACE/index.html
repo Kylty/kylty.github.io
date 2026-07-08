@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRACE 目標循環模型 - Kyle</title>
+  <style>
+    body {
+      background-color: #e8ded0;
+      color: #3d4a42;
+      font-family: Georgia, serif;
+      max-width: 680px;
+      margin: 80px auto;
+      padding: 0 24px;
+      line-height: 1.9;
+    }
+
+    /* ── 標題區 ── */
+    header {
+        margin-bottom: 3rem;
+    }
+
+    header h1 {
+        font-family: Georgia, serif;
+        font-size: 2rem;
+        font-weight: normal;
+        color: #4a5f5a;                /* 深海墨綠——最深的顏色留給標題 */
+        letter-spacing: 1px;
+        margin-bottom: 0.25rem;
+    }
+
+    header p {
+        color: #a68c74;                /* 乾沙輔助色——像退潮後沙上的水痕 */
+        font-weight: normal;    
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+    }
+
+    p {
+      margin: 0 0 1rem;
+    }
+
+    h1 {
+      color: #4a5f5a;
+      font-size: 2rem;
+      font-weight: normal;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    figure {
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    figure img {
+        max-width: 100%;
+        border-radius: 4px;
+    }
+
+    .tagline {
+      color: #8a7e6a;
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    nav {
+      margin-bottom: 3rem;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #8a7e6a;
+      text-decoration: none;
+      margin-right: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    nav a:hover {
+      color: #4a5f5a;
+    }
+
+    nav a.nav-active {
+      color: #3d4a42;
+      font-weight: bold;
+    }
+
+    /* 標籤按鈕列 */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #a68c74;
+      padding-bottom: 0;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      color: #8a7e6a;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: #4a5f5a;
+    }
+
+    .tab-btn.active {
+      color: #9a6850;
+      border-bottom: 2px solid #9a6850;
+      font-weight: bold;
+    }
+
+    /* 引言區塊 */
+    .version-notes {
+      background: rgba(217, 201, 174, 0.3);
+      border-left: 3px solid #a68c74;
+      padding: 0.8rem 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    #trace-content .version-notes h3 {
+    margin: 0 0 0.6rem;
+    font-style: normal;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a68c74;
+    font-weight: normal;
+    border-bottom: none;
+  }
+
+    .version-notes ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .version-notes li {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #6b6153;
+      line-height: 1.6;
+      margin-bottom: 0.4rem;
+    }
+    /* 內容區塊 */
+    #trace-content h3 {
+      color: #4a5f5a;
+      font-size: 1.1rem;
+      font-weight: normal;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #d9c9ae;
+      padding-bottom: 0.4rem;
+    }
+
+    #trace-content ul {
+      margin: 0 0 1rem;
+      padding-left: 1.3rem;
+    }
+
+    #trace-content li {
+      margin-bottom: 0.6rem;
+      color: #3d4a42;
+    }
+
+    #trace-content strong {
+      color: #9a6850;
+    }
+
+    #trace-content del {
+      color: #a68c74;
+      opacity: 0.6;
+    }
+
+    #trace-content mark {
+      background: #e8c4a8;
+      color: #6b3d1f;
+      padding: 0.05em 0.2em;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      .tabs {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="nav-container"></nav>
+<header>
+  <h1>TRACE 目標循環模型</h1>
+  <p>一個持續運作的個人決策治理系統，記錄它從發散到收斂的演進過程。</p>
+</header>
+<figure>
+    <img src="trace_architecture_flow.png" alt="TRACE循環架構圖">
+</figure>
+
+  <div class="tabs">
+    <button class="tab-btn" data-version="ver1">ver.1</button>
+    <button class="tab-btn" data-version="ver2">ver.2</button>
+    <button class="tab-btn" data-version="ver3">ver.3</button>
+    <button class="tab-btn" data-version="ver4">ver.4</button>
+  </div>
+
+  <div id="trace-content"></div>
+
+  <script src="trace.js"></script>
+  <script src="../nav.js"></script>
+  <script>
+    renderNav('nav-container');
+  </script>
+</body>
+</html>
