@@ -140,72 +140,98 @@
     </div> <!-- 關閉 #game -->
 
   <script>  
-    /* ── 故事資料 ── */
-    const story = {
-      start: {
-        text: '你在咖啡店裡閱讀。手邊一杯拿鐵已經喝空，杯壁上紋著一圈一圈的咖啡漬，好像浪在沙灘上留下的足跡。\n你不禁有些昏昏欲睡，視線開始朦朧......',
-        choices: [
-          { label: '閉上雙眼。', next: 'close' },
-          { label: '進入空杯。', next: 'cup' }
-        ]
-      },
-      close: {
-        text: '即便闔上雙眼，世界卻不是一片漆黑。你依稀可見橙色的燈光在眼前晃盪，人影左右搖曳，你分不清處哪邊是開始，哪邊是盡頭。有一隻藍色貓站在樹上看著你。\n「你在等什麼？」他問道。',
-        choices: [
-          { label: '「我只是路過。」', next: 'tree' },
-          { label: '「我在等一切好轉。」', next: 'end_a' }
-        ]
-      },
-      cup: {
-        text: '你鑽進了杯子裡面。你很快聞到一陣濃郁的咖啡香，一片咖啡色的海洋在你面前蕩漾。浪花仍然是白色，但上面帶著濃郁的奶泡。你突然有一個念頭，想要轉身就跑。',
-        choices: [
-          { label: '「為什麼想逃跑？」你問自己。', next: 'escape' },
-          { label: '逃跑', next: 'end_b' }
-        ]
-      },
-      tree: {
-        text: '貓咪笑了。「我們誰不是路過？但你總得帶走些什麼。」說完，他從樹上摘了一顆星星，扔給了你。「現在，繼續迷你的路吧。」',
-        choices: [
-          { label: '將星星收進口袋。', next: 'end_c' },       
-        ]
-      },
-      escape: {
-        text: '根本沒理由逃跑。你對自己說。你走向海浪，咖啡味幾乎有些刺鼻，你單膝跪地，將手伸進裡面。海浪化作一圈漩渦，將你緩緩拉入。不知怎地，你不是很想反抗。',
-        choices: [
-          { label: '任由吞沒。', next: 'end_d' },       
-        ]
-      },
-      end_a: {
-        text: '「那你便繼續等吧。」貓呵呵笑著。他轉身，隱身進樹叢裡，再也看不見了。我坐在樹下，等著他回來。\n\n— 完 —',
-        choices: [
-          { label: '回首頁', next: 'title' },    
-        ]
-      },
-      end_b: {
-        text: '你轉身，狼狽地跑了起來。你想逃離這個是非之地，想逃離這個荒謬的世界。突然，你發覺自己仍坐在那間咖啡廳裡，手邊的咖啡杯已經空了許久。\n\n— 完 —',
-        choices: [
-          { label: '回首頁', next: 'title' },    
-        ]
-      },
-      end_c: {
-        text: '你睜開雙眼，發現自己仍在那間咖啡廳。客人紛紛攘攘，遠處一個孩子吵著要吃蛋糕。你感覺到褲子有什麼東西硬硬的，摸了摸口袋。裡面有一顆發票摺成的星星。\n\n— 完 —',
-        choices: [
-          { label: '回首頁', next: 'title' },    
-        ]
-      },
-      end_d: {
-        text: '你很快地失去意識。忽然，你醒了過來，發覺身旁的人忙碌著，咖啡撒了一地，滴答滴答，在地上蜿蜒成一道小溪流，慢慢延伸到你的鞋子。\n\n— 完 —',
-        choices: [
-          { label: '回首頁', next: 'title' },    
-        ]
+    /* ── Scene / EndingScene class ── */
+    class Scene {
+      constructor(text, choices) {
+        this.text = text;
+        this.choices = choices;
       }
-    };
-    /* 引擎：定義解鎖結局 */
-    function unlockEnding(endingId) {
-      const key = 'ending_' + endingId;        // 例如：'ending_end_a'
-      localStorage.setItem(key, 'true');
-      updateEndingsCount();                              /* 立刻更新顯示數量 */
-  }
+    }
+
+    class EndingScene extends Scene {
+      constructor(text, choices, endingId) {
+        super(text, choices);
+        this.endingId = endingId;
+      }
+      unlock() {
+        const key = 'ending_' + this.endingId;
+        localStorage.setItem(key, 'true');
+        updateEndingsCount();
+      }
+    }
+
+    /* ── 故事資料 ── */
+    const start = new Scene(
+      '你在咖啡店裡閱讀。手邊一杯拿鐵已經喝空，杯壁上紋著一圈一圈的咖啡漬，好像浪在沙灘上留下的足跡。\n你不禁有些昏昏欲睡，視線開始朦朧......',
+      [
+        { label: '閉上雙眼。', next: 'close' },
+        { label: '進入空杯。', next: 'cup' }
+      ]
+    );
+
+    const close = new Scene(
+      '即便闔上雙眼，世界卻不是一片漆黑。你依稀可見橙色的燈光在眼前晃盪，人影左右搖曳，你分不清處哪邊是開始，哪邊是盡頭。有一隻藍色貓站在樹上看著你。\n「你在等什麼？」他問道。',
+      [
+        { label: '「我只是路過。」', next: 'tree' },
+        { label: '「我在等一切好轉。」', next: 'end_a' }
+      ]
+    );
+
+    const cup = new Scene(
+      '你鑽進了杯子裡面。你很快聞到一陣濃郁的咖啡香，一片咖啡色的海洋在你面前蕩漾。浪花仍然是白色，但上面帶著濃郁的奶泡。你突然有一個念頭，想要轉身就跑。',
+      [
+        { label: '「為什麼想逃跑？」你問自己。', next: 'escape' },
+        { label: '逃跑', next: 'end_b' }
+      ]
+    );
+
+    const tree = new Scene(
+      '貓咪笑了。「我們誰不是路過？但你總得帶走些什麼。」說完，他從樹上摘了一顆星星，扔給了你。「現在，繼續迷你的路吧。」',
+      [
+        { label: '將星星收進口袋。', next: 'end_c' }
+      ]
+    );
+
+    const escape = new Scene(
+      '根本沒理由逃跑。你對自己說。你走向海浪，咖啡味幾乎有些刺鼻，你單膝跪地，將手伸進裡面。海浪化作一圈漩渦，將你緩緩拉入。不知怎地，你不是很想反抗。',
+      [
+        { label: '任由吞沒。', next: 'end_d' }
+      ]
+    );
+
+    const end_a = new EndingScene(
+      '「那你便繼續等吧。」貓呵呵笑著。他轉身，隱身進樹叢裡，再也看不見了。我坐在樹下，等著他回來。\n\n— 完 —',
+      [
+        { label: '回首頁', next: 'title' }
+      ],
+      'end_a'
+    );
+
+    const end_b = new EndingScene(
+      '你轉身，狼狽地跑了起來。你想逃離這個是非之地，想逃離這個荒謬的世界。突然，你發覺自己仍坐在那間咖啡廳裡，手邊的咖啡杯已經空了許久。\n\n— 完 —',
+      [
+        { label: '回首頁', next: 'title' }
+      ],
+      'end_b'
+    );
+
+    const end_c = new EndingScene(
+      '你睜開雙眼，發現自己仍在那間咖啡廳。客人紛紛攘攘，遠處一個孩子吵著要吃蛋糕。你感覺到褲子有什麼東西硬硬的，摸了摸口袋。裡面有一顆發票摺成的星星。\n\n— 完 —',
+      [
+        { label: '回首頁', next: 'title' }
+      ],
+      'end_c'
+    );
+
+    const end_d = new EndingScene(
+      '你很快地失去意識。忽然，你醒了過來，發覺身旁的人忙碌著，咖啡撒了一地，滴答滴答，在地上蜿蜒成一道小溪流，慢慢延伸到你的鞋子。\n\n— 完 —',
+      [
+        { label: '回首頁', next: 'title' }
+      ],
+      'end_d'
+    );
+
+    const story = { start, close, cup, tree, escape, end_a, end_b, end_c, end_d };
     /* 引擎：更新標題畫面的解鎖數量 */
     function updateEndingsCount() {
       const endings = ['end_a', 'end_b', 'end_c', 'end_d'];  /* 所有結局的 id */
@@ -236,8 +262,8 @@
 
       const scene = story[sceneId];
       /* 如果是結局場景，自動解鎖 */
-      if (sceneId.startsWith('end_')) {
-        unlockEnding(sceneId);
+      if (scene instanceof EndingScene) {
+        scene.unlock();
       }
       const sceneText = document.getElementById('scene-text');
       const choicesDiv = document.getElementById('choices');
