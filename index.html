@@ -128,6 +128,23 @@
       font-size: 0.9rem;
     }
 
+    /* 按鈕 */
+    #quote-btn {
+      background: transparent;
+      border: 1px solid #9a6850;
+      color: #9a6850;
+      font-family: Georgia, serif;
+      font-size: 0.8rem;
+      padding: 4px 14px;
+      margin-top: 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #quote-btn:hover {
+      background: rgba(154, 104, 80, 0.1);
+    }
     /* 學習進度條 */
     .progress-section {
       margin-bottom: 1.5rem;
@@ -221,7 +238,7 @@
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
         const percent = progress.studied / progress.total * 100
         HTML += `
-        <div class="progress-section">
+          <div class="progress-section"${progress.name === "多益備考"? ' id="toeic-section"' : ""}>
           <p class="progress-label">${progress.name} <br> 學習進度： ${progress.studied}/${progress.total}天（${diffDays}前開始）</p>
            <div class="progress-bar-bg">
            <div class="progress-bar-fill" style="width: ${percent}%"></div>
@@ -233,7 +250,26 @@
       document.getElementById(containerId).innerHTML = HTML;
     }
 
-    renderProgress('progress-container');
+    async function loadQuote() {
+      const response = await fetch('https://dummyjson.com/quotes/random');
+      const data = await response.json();   
+      const qttext = document.getElementById('quote-text');
+      qttext.innerText ='一天一則英文諺語：\n "' + data.quote + '" \u00A0--by ' + data.author;
+    }
+
+    function setupQuoteSection() {
+      const toeic = document.getElementById('toeic-section');
+      toeic.insertAdjacentHTML(
+        'beforeend', `<p id="quote-text" class="progress-content"></p>
+        <button id= "quote-btn">換一句</button>`
+      )
+      const qtbtn = document.getElementById('quote-btn')
+      qtbtn.addEventListener("click", loadQuote);
+    }
+
+    renderProgress('progress-container');  // 先讓 toeic-section 存在
+    setupQuoteSection();                    // 再建立名言結構跟按鈕
+    loadQuote();                            // 最後填入第一句
   </script>
 
 </body>
