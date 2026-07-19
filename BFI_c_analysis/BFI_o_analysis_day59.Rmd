@@ -1,0 +1,154 @@
+---
+title: "大五人格量表(BFI)開放性資料重現分析——閱讀投入與認知想像參與"
+author: "Kyle"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(psych)
+library(dplyr)
+library(ggplot2)
+library(ppcor)
+library(knitr)
+```
+
+## 一、資料說明與理論背景
+
+本報告使用 `psych` 套件內建 bfi 資料集（來自 International Personality Item Pool，透過 SAPA 線上評估專案收集，共 2800 人、25 題人格自評題項、另有性別／教育程度／年齡三項人口統計變數），本次聚焦於開放性（Openness）五個題項。
+
+理論參照為 Mar, Oatley, & Peterson（2009）的研究脈絡。該研究延續 Mar 等人（2006）的發現——閱讀虛構文學的程度與同理心、心智解讀（Theory of Mind）能力呈正向關聯，但此為相關設計，無法確立因果方向。Mar 等人（2009）的後續驗證，目標是排除人格特質（尤其是開放性）作為此關聯的替代解釋：他們先確認開放性是虛構閱讀最一致的人格相關因子，接著將其與「被故事吸引投入的傾向」、性別一併統計控制，結果發現即使控制這些變項，虛構閱讀量仍能預測同理心測驗表現。對於開放性扮演的角色，其理論解釋是：開放性與想像傾向、好奇心、智性追求、創造力相關，而想像力正是理解敘事、進行換位思考的關鍵能力。
+
+**本分析的定位需要誠實界定**：原始研究使用的閱讀習慣量表與同理心測驗原始資料並未公開釋出，本報告**不逐一複製其迴歸控制設計**，而是使用 bfi 真實資料中最貼近的可得指標，對「開放性與想像／認知參與存在系統性關聯」這個核心命題進行部分驗證：
+
+- **閱讀投入（X）**：以反向計分的 O2（「我會避開艱澀的閱讀材料」）作為代理變項
+- **認知想像參與（Y）**：以 O1（點子豐富）、O3（對話深度）、O4（反思傾向）三題平均組成的自建合成分數
+- **控制變項（Z）**：年齡、教育程度（分別檢驗,理由詳見二、五節）
+
+此設計為部分驗證而非逐一重現，屬本報告的方法限制，將於第五節結果詮釋中一併討論。
+
+## 二、遺漏值與異常值處理
+
+```{r missing-check}
+# 遺漏值檢查
+bfi |>
+  dplyr::select(O1:O5, age, education) |>
+  dplyr::summarise(across(everything(), ~sum(is.na(.))))
+```
+
+```{r missing-mechanism}
+# O 題項遺漏值機制判斷（O1,O3,O4 為本分析實際使用之題項，O5 未使用故不列入篩選）
+bfi |>
+  mutate(missing_o = if_any(c(O1, O3, O4, O5), is.na)) |>
+  group_by(missing_o) |>
+  summarise(
+    n        = n(),
+    mean_age = mean(age),
+    sd_age   = sd(age),
+    .groups  = "drop"
+  )
+```
+
+```{r clean}
+# 清理流程（篩選條件僅對應本分析實際使用之欄位：O1,O2,O3,O4）
+bfi_clean <- bfi |>
+  filter(!if_any(c(O1, O2, O3, O4), is.na)) |>
+  filter(age >= 11) |>
+  mutate(
+    O2r = 7 - O2,
+    Engagement = (O1 + O3 + O4) / 3
+  )
+
+nrow(bfi_clean)
+```
+
+### 2.1 教育程度遺漏判斷
+
+教育程度共 223 筆遺漏（8%）。延續 Day28 判斷：缺失者平均年齡 18 歲、有填者平均年齡 29.7 歲，差距顯著，判定為 MAR。本次教育程度作為控制變項之一，223 筆遺漏將於控制教育程度的偏相關分析中另行排除（見 2.4），不併入主要清理流程，以保留控制年齡分析的最大可用樣本。
+
+### 2.2 開放性題項遺漏判斷
+
+O1、O3、O4、O5 任一有缺，共 74 筆。比較有缺／無缺兩組平均年齡（28.8 vs 28.7），差異極小，判定為 MCAR，直接刪除。
+
+### 2.3 年齡異常值判斷
+
+延續 Day28 判準，排除 11 歲以下受試者，因自評量表需具備形式運思能力方能有效作答。
+
+### 2.4 反向計分與控制變項分軌處理
+
+O2 為反向題（「避開艱澀閱讀材料」），反向計分後（7 − 原始分數）分數越高代表閱讀投入越高。
+
+偏相關公式僅能處理單一第三變項，同時控制年齡與教育程度需仰賴迴歸殘差邏輯（尚未學習之工具），故分開檢驗：
+
+```{r partial-edu-sample}
+bfi_clean_edu <- bfi_clean |>
+  filter(!is.na(education))
+
+nrow(bfi_clean_edu)
+```
+
+## 三、描述統計表
+
+```{r desc-table}
+bfi_clean |>
+  summarise(
+    n            = n(),
+    mean_O2r     = mean(O2r),
+    sd_O2r       = sd(O2r),
+    mean_Engage  = mean(Engagement),
+    sd_Engage    = sd(Engagement)
+  ) |>
+  kable(digits = 2, caption = "閱讀投入與認知想像參與描述統計")
+```
+
+## 四、圖表
+
+### 4.1 原始相關矩陣
+
+```{r cor-matrix}
+cor(bfi_clean[, c("O2r", "Engagement", "age")], use = "complete.obs") |>
+  kable(digits = 3, caption = "O2r、Engagement、age 相關矩陣")
+```
+
+### 4.2 偏相關：控制年齡
+
+```{r pcor-age}
+pcor.test(bfi_clean$O2r, bfi_clean$Engagement, bfi_clean$age)
+```
+
+### 4.3 偏相關：控制教育程度
+
+```{r pcor-edu}
+pcor.test(bfi_clean_edu$O2r, bfi_clean_edu$Engagement, bfi_clean_edu$education)
+```
+
+### 4.4 散佈圖
+
+```{r scatter}
+ggplot(bfi_clean, aes(x = O2r, y = Engagement)) +
+  geom_jitter(width = 0.15, height = 0.1, alpha = 0.1, color = "#3b6ea5") +
+  geom_smooth(method = "lm", se = TRUE, color = "#d1495b") +
+  labs(
+    x = "閱讀投入（O2r，1–6）",
+    y = "認知想像參與（Engagement，1–6）",
+    title = paste0("O2r × Engagement 散佈圖（真實資料，n=", nrow(bfi_clean), "）")
+  ) +
+  theme_minimal()
+```
+
+## 五、結果詮釋
+
+整體而言，閱讀投入(O2r)與認知想像(O1, O3, O4)參與之間呈現正相關，閱讀投入解釋認知想像參與約 6.7% 的變異(*r* = 0.258, r² ≈ 0.067)。
+分別以年齡與教育程度控制後，兩次控制方向一致，變化幅度小(控制年齡後偏相關 = 0.257，控制教育程度後偏相關 = 0.263)，顯示兩者皆非本分析中的實質混淆因子。
+目前結論為閱讀投入與認知想像參與具關連性，但不能排除第三變項(如共同方法變異，個人作答風格同時推動兩者)、方向性問題、關聯強度以及抽樣選樣的誤差。
+在本分析的設計限制上，將O2單題以反向計分的數據，直接代理閱讀投入的抽象概念，本身會帶來效度限制的風險。此外，分開控制年齡與教育程度，而非合併，忽略了兩者自身的相關性，會有重複計入解釋力的問題。
+
+## 六、參考文獻
+
+Mar, R. A., Oatley, K., Hirsh, J., dela Paz, J., & Peterson, J. B. (2006). Bookworms versus nerds: Exposure to fiction versus non-fiction, divergent associations with social ability, and the simulation of fictional social worlds. *Journal of Research in Personality, 40*(5), 694–712.
+
+Mar, R. A., Oatley, K., & Peterson, J. B. (2009). Exploring the link between reading fiction and empathy: Ruling out individual differences and examining outcomes. *Communications, 34*(4), 407–428.

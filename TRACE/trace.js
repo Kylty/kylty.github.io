@@ -28,7 +28,16 @@ class TraceVersion {
     }
     return HTML;
   }
+    get questionCount() {
+    let total = 0;
+    for (const step of this.#steps) {
+      total += step.questions.length;
+    }
+    return total;
+  }
 }
+
+module.exports = TraceVersion; 
 
 async function setupTabs() {
   try {
@@ -71,4 +80,6 @@ async function setupTabs() {
   }
 }
 
-setupTabs();
+if (typeof document !== 'undefined') {
+  setupTabs();
+}

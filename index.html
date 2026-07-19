@@ -224,9 +224,9 @@
     renderNav('nav-container');
 
     const plans = [
-      { name: "統計", start: "2026-5-20", total: 90, studied: 54, recent: "卡方檢定" },
-      { name: "程式語言", start: "2026-5-23", total: 90, studied: 48, recent: "物件導向工具" },
-      { name: "多益備考", start: "2026-6-28", total: 60, studied: 13, recent: "單字基底加強:750分" }
+      { name: "統計", start: "2026-5-20", total: 90, studied: 59, recent: "統計論文實操" },
+      { name: "程式語言", start: "2026-5-23", total: 90, studied: 52, recent: "資料視覺化" },
+      { name: "多益備考", start: "2026-6-28", total: 60, studied: 17, recent: "單字基底加強:750分" }
     ];
 
     function renderProgress(containerId) {
@@ -254,7 +254,7 @@
       const response = await fetch('https://dummyjson.com/quotes/random');
       const data = await response.json();   
       const qttext = document.getElementById('quote-text');
-      qttext.innerText ='一天一則英文諺語：\n "' + data.quote + '" \u00A0--by ' + data.author;
+      qttext.innerText ='一天一則英文句子：\n "' + data.quote + '" \u00A0--by ' + data.author;
     }
 
     function setupQuoteSection() {
