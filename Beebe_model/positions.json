@@ -1,0 +1,58 @@
+[
+  {
+    "rank": 1,
+    "code": "Fi",
+    "archetype": "Hero",
+    "score": 12,
+    "content": "主導功能，運作順利時會帶著一種「英雄式」的能量——勝任感、自信，在自己擅長的領域裡有種天然的權威感。"
+  },
+  {
+    "rank": 2,
+    "code": "Ne",
+    "archetype": "Parent",
+    "score": 11,
+    "content": "輔助功能，你用來「照顧」他人的典型方式，本質上服務主功能，不搶主導地位。"
+  },
+  {
+    "rank": 3,
+    "code": "Si",
+    "archetype": "Puer/Puella",
+    "score": 5,
+    "content": "第三功能，帶來玩心與創造力，但同時也比較脆弱、容易帶著防衛性。"
+  },
+  {
+    "rank": 4,
+    "code": "Te",
+    "archetype": "Anima/Animus",
+    "score": 0,
+    "content": "劣勢功能，是通往無意識的橋樑，承載著渴望與嚮往，常在親密關係裡浮現。"
+  },
+  {
+    "rank": 5,
+    "code": "Fe",
+    "archetype": "Opposing Personality",
+    "score": 8,
+    "content": "英雄功能的陰影，會反過來牴觸、挑戰主導功能本身的立場。"
+  },
+  {
+    "rank": 6,
+    "code": "Ni",
+    "archetype": "Senex/Witch",
+    "score": 9,
+    "content": "輔助功能的陰影，也稱「批判父母」，運作起來可能是苛刻的批判，也可能是恰如其分的立界限。"
+  },
+  {
+    "rank": 7,
+    "code": "Se",
+    "archetype": "Trickster",
+    "score": 3,
+    "content": "第三功能的陰影，擅長製造雙重束縛與矛盾情境，讓人陷入自相矛盾的處境。"
+  },
+  {
+    "rank": 8,
+    "code": "Ti",
+    "archetype": "Demon/Daimon",
+    "score": 10,
+    "content": "劣勢功能的陰影，同時握有心理結構裡最具破壞性、也最具轉化力的潛能。"
+  }
+]

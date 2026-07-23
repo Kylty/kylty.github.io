@@ -37,7 +37,9 @@ class TraceVersion {
   }
 }
 
-module.exports = TraceVersion; 
+if (typeof module !== 'undefined') {
+  module.exports = TraceVersion;
+}
 
 async function setupTabs() {
   try {
