@@ -1,5 +1,13 @@
 [
   {
+    "title": "人格特質與榮格八維原型",
+    "link": "Beebe_model/index.html",
+    "date": "2026-07-25",
+    "description": "由我的MBTI與Beebe的歧異出發，製作視覺化呈現並自我映證。",
+    "icon": "beebe"
+  },
+
+  {
     "title": "大五人格量表(BFI)開放性資料重現分析",
     "link": "BFI_c_analysis/BFI_o_analysis_day59.html",
     "date": "2026-07-19",

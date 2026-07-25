@@ -1,4 +1,8 @@
 const icons = {
+  beebe: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="9" cy="12" r="6" stroke="#9a6850" stroke-width="1.5"/>
+  <circle cx="15" cy="12" r="6" fill="#9a6850" opacity="0.85"/>
+  </svg>`,
   target: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="12" cy="12" r="9" stroke="#9a6850" stroke-width="1.5"/>
   <circle cx="12" cy="12" r="5.5" stroke="#9a6850" stroke-width="1.5"/>

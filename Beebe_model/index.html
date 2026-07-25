@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人格特質與榮格八維原型 - Kyle</title>
+<style>
+  body {
+    background-color: #e8ded0;
+    color: #3d4a42;
+    font-family: Georgia, serif;
+    max-width: 680px;
+    margin: 80px auto;
+    padding: 0 24px;
+    line-height: 1.9;
+  }
+
+
+    /* ── 標題區 ── */
+  header {
+      margin-bottom: 3rem;
+  }
+
+  header h1 {
+      font-family: Georgia, serif;
+      font-size: 2rem;
+      font-weight: normal;
+      color: #4a5f5a;                /* 深海墨綠——最深的顏色留給標題 */
+      letter-spacing: 1px;
+      margin-bottom: 0.25rem;
+  }
+
+  header p {
+      color: #a68c74;                /* 乾沙輔助色——像退潮後沙上的水痕 */
+      font-weight: normal;    
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+  }
+
+  h1 {
+    color: #4a5f5a;
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  nav {
+    margin-bottom: 3rem;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+
+  nav a {
+    color: #8a7e6a;
+    text-decoration: none;
+    margin-right: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  nav a:hover {
+    color: #4a5f5a;
+  }
+
+  nav a.nav-active {
+    color: #3d4a42;
+    font-weight: bold;
+  }
+
+  .beebe-container {
+    display: flex;
+    gap: 14px;
+    align-items: stretch;
+    margin-top: 1.5rem;
+  }
+
+  .beebe-chart {
+    flex-shrink: 0;
+  }
+
+  .beebe-info {
+    width: 210px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.85rem;
+    line-height: 1.75;
+  }
+
+  .beebe-info-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 標籤放在內容框外面，不佔用內容框的空間 */
+  .info-label {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #a68c74;
+    margin-bottom: 0.4rem;
+  }
+
+  .info-box {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+  }
+
+  #info-conscious {
+    background: #d9c9ae;
+    color: #3d4a42;
+  }
+
+  #info-shadow {
+    background: #4a5f5a;
+    color: #e0d6c8;
+  }
+
+  .version-notes {
+    background: rgba(217, 201, 174, 0.3);
+    border-left: 3px solid #a68c74;
+    padding: 0.8rem 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .version-notes h3 {
+    margin: 0 0 0.6rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a68c74;
+    font-weight: normal;
+  }
+
+  .version-notes p {
+    font-size: 0.9rem;
+    color: #6b6153;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    body {
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+    .beebe-container {
+      flex-direction: column;
+    }
+    .beebe-info {
+      width: 100%;
+      flex-direction: row;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav-container"></nav>
+<header>
+<h1>人格特質與榮格八維原型</h1>
+<p>INFP的自我探索</p>
+</header>
+
+<div class="version-notes">
+  <h3>寫在之前</h3>
+  <p>
+    此圖表為 John Beebe 模型進行自我測量的視覺化呈現，未經信效度驗證，也無法套用於他人。鑒於榮格經典理論與 Beebe 對「陰影功能」的解讀都不一致，這套工具本身仍有方法論上的爭議。<br>這是一次映證自己的紀錄，而非判決。
+  </p>
+</div>
+
+<div class="beebe-container">
+  <svg id="position-chart" class="beebe-chart" width="440" viewBox="0 0 500 480">
+    <path id="pairing-curve" d="" fill="none" stroke="#9a6850" stroke-width="2" opacity="0.75"/>
+  </svg>
+
+  <div class="beebe-info">
+    <div class="beebe-info-half">
+      <div id="label-conscious" class="info-label">意識</div>
+      <div id="info-conscious" class="info-box">滑鼠移到方塊上查看說明</div>
+    </div>
+    <div class="beebe-info-half">
+      <div id="label-shadow" class="info-label">陰影</div>
+      <div id="info-shadow" class="info-box">滑鼠移到方塊上查看說明</div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="beebe.js"></script>
+<script src="../nav.js"></script>
+<script>
+  renderNav('nav-container');
+</script>
+
+</body>
+</html>
