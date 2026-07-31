@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>咖啡店的下午</title>
+  <style>
+
+    /* 標題畫面的容器 */
+    #title-screen {
+    text-align: center;
+    padding: 60px 0;
+    transition: opacity 0.8s;  /* 淡出動畫 */
+    }
+
+    /* 標題文字 */      
+    #title {
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    }
+
+    /* 副標題文字 */       
+    #subtitle {
+    font-size: 0.9rem;
+    color: #a09888;
+    margin-bottom: 3rem;
+    letter-spacing: 1px;
+    }
+
+    /* 淡出動畫(本身不做事，等待後續javaScript加上去) */
+    .fade-out {
+    opacity: 0;  /* 透明度降到 0，觸發淡出 */
+    }
+
+    /* 整個頁面的基礎設定 */
+    body {
+      background-color: #1a1a2e;
+      color: #e0d6c8;
+      font-family: Georgia, serif;
+      max-width: 620px;
+      margin: 80px auto;
+      padding: 0 24px;
+      line-height: 2;
+    }
+
+    /* 故事敘述文字的區塊 */
+    #scene-text {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      min-height: 80px;
+      transition: opacity 0.4s;  /* 場景切換時淡出 */
+    }
+    
+    /* 場景淡出的觸發條件， */ 
+    /* 當 scene-text 同時擁有 hidden class 時，opacity 變成 0。 */
+    #scene-text.hidden {
+      opacity: 0;
+    }
+
+    /* 所有選項按鈕的樣式。 */
+    .choice-btn {
+      display: block;
+      width: 100%;
+      background: transparent;
+      border: 1px solid #e0d6c8;
+      color: #e0d6c8;
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      padding: 12px 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      text-align: left;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    /*滑鼠懸停在按鈕上時的樣式。:hover 是一種「偽類」，代表「當滑鼠在上面的時候」。*/
+    .choice-btn:hover {
+      background: rgba(224, 214, 200, 0.1);
+    }
+
+    /*選項按鈕的容器，只設定了上方間距。*/
+    #choices {
+      margin-top: 1.5rem;
+    }
+
+        /* 導覽列 */
+    nav {
+      margin-bottom: 3rem;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #8a7e6a;
+      text-decoration: none;
+      margin-right: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    nav a:hover {
+      color: #4a5f5a;
+    }
+
+    nav a.nav-active {
+      color: #3d4a42;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    /* 當螢幕寬度小於 600px 時（手機） */
+    @media (max-width: 600px) {
+      body {
+        margin: 40px auto;  /* 手機上縮小上下間距 */
+        padding: 0 16px;    /* 手機上縮小左右內距 */
+      }
+
+      h1 {
+        font-size: 1.6rem;  /* 手機上標題稍微縮小 */
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <nav id="nav-container"></nav>
+  <div id="title-screen"> <!-- 1. 標題畫面 -->
+    <h1 id="title">咖啡店的下午</h1>
+    <p id="subtitle">一場關於迷途的夢</p>
+    <button id="start-btn" class="choice-btn">走進去</button>
+    <p id="endings-count" style="font-size:0.85rem; color:#a09888; margin-top:0.5rem;"></p>  
+  </div>
+
+  <div id="game" style="display:none">   <!-- 2. 遊戲畫面 -->
+      
+    <div id="scene-text"></div>
+    <div id="choices"></div>
+    </div> <!-- 關閉 #game -->
+
+  <script src="story.js"></script>
+  <script>
+    /* ── 場景資料容器，等 init() 賦值 ── */
+    let scenes;
+
+    /* 引擎：定義解鎖結局 */
+    function unlockEnding(endingId) {
+      const key = 'ending_' + endingId;        // 例如：'ending_end_a'
+      localStorage.setItem(key, 'true');
+      updateEndingsCount();                              /* 立刻更新顯示數量 */
+  }
+    /* 引擎：更新標題畫面的解鎖數量 */
+    function updateEndingsCount() {
+      const endings = ['end_a', 'end_b', 'end_c', 'end_d'];  /* 所有結局的 id */
+      let count = 0;                                           /* 計數器，從 0 開始 */
+      endings.forEach(function(id) {
+        if (localStorage.getItem('ending_' + id) === 'true') { /* 如果這個結局已解鎖 */
+          count++;                                              /* 計數器加一 */
+        }
+      });
+      const total = endings.length;          /* 自動計算總數 */
+      const display = document.getElementById('endings-count');
+      display.textContent = '已解鎖結局：' + count + ' / ' + total;
+    }
+
+    /* ── 引擎：讀取場景並顯示 ── */
+    function showScene(sceneId) {
+
+    /* 特殊場景：回到標題畫面 */
+    if (sceneId === 'title') {
+        game.style.display = 'none';
+        titleScreen.style.display = 'block';
+        setTimeout(function() {
+        titleScreen.classList.remove('fade-out'); //使回到標題時恢復可見。
+        }, 50);
+        showScene('start');  /* ← 加這行：重置到開頭場景 */
+        return;  /* 直接結束函式，不往下執行 */
+    }
+
+      const scene = scenes[sceneId];
+      /* 如果是結局場景，自動解鎖 */
+      if (scene.isEnding) {
+        unlockEnding(sceneId);
+      }
+
+      /* 先淡出 */
+      sceneText.classList.add('hidden');
+
+      setTimeout(function() {
+        renderSceneContent(scene);
+        /* 淡入 */
+        sceneText.classList.remove('hidden');
+
+      }, 400);  /* 等淡出動畫跑完再換內容 */
+
+
+    }
+
+    /* 引擎：把場景資料換到畫面上（文字＋按鈕） */
+    function renderSceneContent(scene) {
+      sceneText.innerText = scene.text;
+      choicesDiv.innerHTML = '';
+      renderChoices(scene.choices, choicesDiv);
+    }
+
+    /* 引擎：根據選項資料，動態生成按鈕並放進指定容器 */
+    function renderChoices(choices, container) {
+      choices.forEach(function(choice) {
+        const btn = document.createElement('button'); // 建立一個新的按鈕元素
+        btn.className = 'choice-btn';
+        btn.textContent = choice.label; // 設定它的文字
+        btn.addEventListener('click', function() { // 給它一個點擊事件
+          showScene(choice.next); // 點了之後跳到下一個場景
+        });
+        container.appendChild(btn); // 把它放進頁面裡
+      });
+    }
+    
+    /* ── 標題畫面 ── */
+    const titleScreen = document.getElementById('title-screen');
+    const game = document.getElementById('game');
+    const startBtn = document.getElementById('start-btn');
+    const sceneText = document.getElementById('scene-text');
+    const choicesDiv = document.getElementById('choices');
+    
+    /* 幫StartBtn 加上監聽器 */
+    startBtn.addEventListener('click', function() {
+    titleScreen.classList.add('fade-out');        /* 加上淡出 class */
+
+    setTimeout(function() {                        /* 等 0.8 秒後執行 */
+        titleScreen.style.display = 'none';          /* 完全隱藏標題畫面 */
+        game.style.display = 'block';                /* 顯示遊戲 */
+    }, 800);                                       /* 800ms = 0.8 秒 */
+    });
+
+    /* ── 啟動：等資料載入完成後才開始 ── */
+    async function init() {
+      scenes = await loadStory();
+      updateEndingsCount();
+      showScene('start');
+    }
+
+    init();
+
+  </script>
+  <script src="nav.js"></script>
+  <script>
+    renderNav('nav-container');
+  </script>
+
+</body>
+</html>

@@ -99,6 +99,31 @@ figcaption {
     border-radius: 50%;
     background-color: #a85d3a;
 }
+
+  .version-notes {
+    background: rgba(217, 201, 174, 0.3);
+    border-left: 3px solid #a68c74;
+    padding: 0.8rem 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .version-notes h3 {
+    margin: 0 0 0.6rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a68c74;
+    font-weight: normal;
+  }
+
+  .version-notes p {
+    font-size: 0.9rem;
+    color: #6b6153;
+    line-height: 1.8;
+    margin: 0;
+  }
+
 /* ── 按鈕區 ── */
 button {
     font-family: Georgia, serif;
