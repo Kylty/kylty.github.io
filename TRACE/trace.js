@@ -18,20 +18,46 @@ class TraceVersion {
   }
   renderHTML() {
     let HTML = '';
+
+    HTML += `<div class="version-notes">`;
+    HTML += `<h3>版本說明（${this.date}）</h3>`;
+    HTML += `<ul>`;
+    for (const commit of this.commits) {
+      HTML += `<li>${parseMarkdown(commit)}</li>`;
+    }
+    HTML += `</ul>`;
+    HTML += `</div>`;
+
     for (const step of this.#steps) {
       HTML += `<h3>${step.name}</h3>`;
-      HTML += `<ul>`;
-      for (const question of step.questions) {
-        HTML += `<li>${parseMarkdown(question)}</li>`;
+
+      if (step.questions) {
+        HTML += `<ul>`;
+        for (const question of step.questions) {
+          HTML += `<li>${parseMarkdown(question)}</li>`;
+        }
+        HTML += `</ul>`;
       }
-      HTML += `</ul>`;
+
+      if (step.methods) {
+        for (const method of step.methods) {
+          HTML += `<h4>${method.title}</h4>`;
+          HTML += `<p>${parseMarkdown(method.description)}</p>`;
+        }
+      }
+
+      if (step.output) {
+        HTML += `<div class="step-output">${parseMarkdown(step.output)}</div>`;
+      }
     }
     return HTML;
   }
     get questionCount() {
     let total = 0;
     for (const step of this.#steps) {
-      total += step.questions.length;
+      if (step.questions) {
+        total += step.questions.length;
+      }
     }
     return total;
   }
@@ -76,7 +102,7 @@ async function setupTabs() {
         }
       });
     });
-    document.querySelector('[data-version="ver4"]').click();
+    document.querySelector('[data-version="ver5"]').click();
   } catch (error) {
     console.log("載入 trace.json 失敗：", error.message);
   }
