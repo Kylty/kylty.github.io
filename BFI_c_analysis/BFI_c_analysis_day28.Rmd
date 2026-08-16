@@ -5,6 +5,9 @@ date: "2026-06-19"
 output: 
   html_document:
     toc: true
+    toc_float: true
+    theme: flatly
+    df_print: paged
 ---
 ```{r setup, include=FALSE}
 library(psych)
